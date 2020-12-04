@@ -4,7 +4,8 @@ import CustomButton from "../../../components/button";
 import CustomInput from "../../../components/input";
 import CustomModal from "../../../components/modal";
 import { Title } from "../../../styles/emotions";
-import { getUIDCode } from "../../../utils/functions";
+import { SECURE_KEYS } from "../../../utils/enums";
+import { getStore, getUIDCode } from "../../../utils/functions";
 
 interface IModalComment {
     open: boolean,
@@ -18,12 +19,25 @@ function ModalComment(props: IModalComment) {
         setComment(value);
     }
 
-    const onSaveComment = () => {
+    const onSaveComment = async () => {
+        let name = "Anónimo";
+        const user = await getStore(SECURE_KEYS.USER);
+        const nonUser = await getStore(SECURE_KEYS.NON_USER);
         const obj = {
             id: getUIDCode(),
             userId: "test",
             text: comment,
-            name: "Renys",
+            name,
+            verified: false
+        }
+        if(user) {
+            const jsonUser = JSON.parse(user);
+            obj.name = jsonUser.name;
+            obj.verified = true;
+        }
+
+        if(nonUser && !user) {
+            obj.name = nonUser;
         }
 
         props.onNewComment(obj);

@@ -14,6 +14,6 @@ export interface IFPost {
     solved: false,
     date: string,
     comments: {
-        id: string, userId: string, text: string, name: string,
+        id: string, userId: string, text: string, name: string, verified?: boolean
     }[]
 }
