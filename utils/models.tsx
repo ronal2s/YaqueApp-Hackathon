@@ -12,8 +12,14 @@ const models = {
         description: "",
         priority: "",
         picture: "",
-        latitude: "",
-        longitude: "",
+        region: {
+            longitudeDelta: 0,
+            latitudeDelta: 0,
+            latitude: 0,
+            longitude: 0,    
+        },
+        // latitude: "",
+        // longitude: "",
         solved: false,
         date: new Date().toLocaleDateString("en-US"),
         comments: []

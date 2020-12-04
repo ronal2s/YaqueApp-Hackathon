@@ -21,7 +21,8 @@ type ModalProps = {
     titleIconColor?: string | boolean,
     children: React.ReactNode,
     animationIn?: Animation | CustomAnimation
-    animationOut?: Animation | CustomAnimation
+    animationOut?: Animation | CustomAnimation,
+    disableSwipe?: boolean,
 
 }
 
@@ -36,7 +37,7 @@ function CustomModal(props: ModalProps) {
 
     return (
         <Modal isVisible={open} onModalShow={_onModalShow} animationIn={props.animationIn ? props.animationIn : "slideInDown"} animationOut={props.animationOut ? props.animationOut : "slideOutDown"}
-            onModalHide={_onHide} onSwipeComplete={_onClose} swipeDirection="right"
+            onModalHide={_onHide} onSwipeComplete={props.disableSwipe ? () => console.log() : _onClose} swipeDirection={props.disableSwipe?undefined:"right"}
             onBackButtonPress={_onClose} onBackdropPress={_onClose}  >
             <View style={darkThemeMidView}>
                 <View style={{ flexDirection: "row", justifyContent: "center" }} >

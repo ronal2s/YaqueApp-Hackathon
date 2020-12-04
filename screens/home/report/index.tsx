@@ -1,20 +1,26 @@
 import React, { useState } from "react";
 import { Alert, Keyboard } from "react-native";
-import { Button, Card } from "react-native-elements";
+import { Button, Card, Icon } from "react-native-elements";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import * as ImagePicker from 'expo-image-picker';
+import MapView from 'react-native-maps';
+
 //Custom Components
 import CustomButton from "../../../components/button";
 import CustomInput from "../../../components/input";
 import CustomPicker from "../../../components/picker";
 //Utils
+import styles from "./styles";
 import { View } from "../../../styles/emotions";
 import { COLORS } from "../../../utils/enums";
 import models from "../../../utils/models";
+import ModalMap from "./modalMap";
 
 function ReportTab() {
     const [form, setForm] = useState({ ...models.report });
     const [loading, setLoading] = useState(false);
+    const [modalMap, setModalMap] = useState(false);
+    const [region, setRegion] = useState(null);
 
     const handleinputs = (name: string, value: string) => {
         setForm({ ...form, [name]: value });
@@ -70,6 +76,17 @@ function ReportTab() {
         ])
     }
 
+    const onCloseMap = (region) => {
+        if(region) {
+            setRegion(region);
+        }
+        setModalMap(false);
+    }
+
+    const onPickLocation = () => {
+        setModalMap(true);
+    }
+
     const onReport = () => {
         const obj = { ...form };
         //Push report to firebase
@@ -85,12 +102,33 @@ function ReportTab() {
                     <CustomInput label="Descripción" placeholder="Desarrollar el problema" name="description" value={form.description} textArea numberOfLines={5} onChangeText={handleinputs} />
                     <CustomPicker label="Prioridad" items={["Alta", "Media", "Baja"]} name="priority" borderColor={COLORS.LABEL} selectedValue={form.priority} onValueChange={handleinputs} />
                     <Card containerStyle={{ margin: 0, borderWidth: 0 }} >
-                        <Card.Title>Adjuntar imagen o video</Card.Title>
+                        <Card.Title>Adjuntar imagen</Card.Title>
                         {form.picture !== "" && <Card.Image onPress={onPressPicture} source={{ uri: form.picture }} />}
                         <Button title="Seleccionar" type="clear" onPress={onPickMedia} />
                     </Card>
+                    <Card containerStyle={{ margin: 0, borderWidth: 0 }} >
+                        <Card.Title>Seleccionar ubicación</Card.Title>
+                        {region &&
+                            <View flex={1} height={150} >
+                                <MapView pitchEnabled={false} rotateEnabled={false} zoomEnabled={false} scrollEnabled={false}
+                                    style={{ ...styles.map }}
+                                    region={region}
+                                    // showsUserLocation={true}
+                                >
+                                </MapView>
+                                <View style={{
+                                    left: '48.8%',
+                                    position: 'absolute',
+                                    top: '25%'
+                                }}>
+                                    <Icon name="map-marker-alt" type="font-awesome-5" color={COLORS.PRIMARY} size={40} />
+                                </View>
+                            </View>}
+                        <Button title="Seleccionar" type="clear" onPress={onPickLocation} />
+                    </Card>
                     <CustomButton title="Reportar" buttonColor={COLORS.SECONDARY} onPress={onReport} />
                 </Card>
+                <ModalMap open={modalMap} onClose={onCloseMap} />
             </View>
         </KeyboardAwareScrollView>
     )

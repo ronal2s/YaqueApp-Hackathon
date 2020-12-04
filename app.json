@@ -24,6 +24,11 @@
     },
     "android": {
       "package": "com.renysdelacruz.yaque",
+      "config": {
+        "googleMaps": {
+          "apiKey": "AIzaSyCaFQ3ewMnbNsJFw9qp0L0mqPTIxJu6Wa8"
+        }
+      },
       "versionCode": 1,
       "permissions": []
     }
