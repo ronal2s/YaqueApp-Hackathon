@@ -9,7 +9,10 @@ import Home from "../screens/home";
 import Login from "../screens/login";
 import Settings from "./settings";
 import Screen1 from "./screen1";
+
 import ViewPost from "./home/community/post";
+import ViewNews from "./home/news/viewMore";
+
 import ModalUser from "./modals/login";
 import ModalNonUser from "./modals/register";
 //Custom components
@@ -48,6 +51,7 @@ function AppContainer(props: IAppContainer) {
                     <Stack.Screen name={Screens.Settings} component={Settings} options={stepsRecargaHeader} />
                     <Stack.Screen name={Screens.Screen1} component={Screen1} />
                     <Stack.Screen name={Screens.Post} component={ViewPost} />
+                    <Stack.Screen name={Screens.News} component={ViewNews} />
                 </Stack.Navigator>
                 :
                 <Stack.Navigator initialRouteName={Screens.Login} >

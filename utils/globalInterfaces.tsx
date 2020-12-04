@@ -13,7 +13,16 @@ export interface IFPost {
     longitude: string,
     solved: false,
     date: string,
+    verified?: boolean,
+    user: { name: string, email?: string },
     comments: {
         id: string, userId: string, text: string, name: string, verified?: boolean
     }[]
+}
+
+export interface IFNews {
+    title: string,
+    body: string,
+    uri: string,
+    date: string,
 }

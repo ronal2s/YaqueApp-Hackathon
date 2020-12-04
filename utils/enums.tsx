@@ -6,7 +6,8 @@ export enum Screens {
     Home = "Inicio",
     Ajustes = "Ajustes",
     Salir = "Salir",
-    Post = "Publicación"
+    Post = "Publicación",
+    News = "Noticias"
 };
 
 export enum TabScreens {

@@ -15,21 +15,22 @@ function CommunityTab(props) {
 
     return (
         <ScrollView>
-            <Title>Hoy</Title>
+            {/* <Title>Hoy</Title> */}
+            <Title>Otros reportes</Title>
             {posts.map((post, key) => {
                 return (
                     <Card key={key} >
-                        <Card.Title>{post.title}</Card.Title>
+                        <Card.FeaturedTitle style={{color: "black"}} >{post.title}</Card.FeaturedTitle>
                         <Card.Image source={{ uri: post.picture }} />
-                        <Text>{post.description}</Text>
+                        <Text>{post.user.name} - {post.description}</Text>
                         <Separator />
                         <Text fontWeight="bold" color={COLORS.SECONDARY}>{post.comments.length} Comentarios</Text>
-                        <Button title="Expandir" type="outline" onPress={() => onExpandPost(post)} />
+                        <Button title="Ver más" type="outline" onPress={() => onExpandPost(post)} />
                         {/* <Separator/> */}
                     </Card>
                 )
             })}
-            <Title>Antiguos</Title>
+            {/* <Title>Antiguos</Title> */}
         </ScrollView>
     )
 }
@@ -45,6 +46,8 @@ const posts = [
         longitude: "",
         solved: false,
         date: new Date().toLocaleDateString("en-US"),
+        verified: false,
+        user: {name: "Juan Veloz", email: null},
         comments: [
             { id: "183", userId: "402", text: "Es cierto", name: "Jennifer Veloz" },
         ]
