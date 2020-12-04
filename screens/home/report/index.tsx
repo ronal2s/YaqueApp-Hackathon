@@ -62,11 +62,15 @@ function ReportTab() {
         }
     }
     const onPickMedia = () => {
-        Alert.alert("Seleccionar una imágen", "Escoger una opción", [
-            { text: "Cámara", onPress: pickCameraPhoto },
-            { text: "Álbum", onPress: _pickImage },
-            { text: "Cancelar", style: "cancel" },
-        ])
+        if(form.picture) {
+            setForm({...form, picture: ""});
+        } else {
+            Alert.alert("Seleccionar una imágen", "Escoger una opción", [
+                { text: "Cámara", onPress: pickCameraPhoto },
+                { text: "Álbum", onPress: _pickImage },
+                { text: "Cancelar", style: "cancel" },
+            ])
+        }
     }
 
     const onPressPicture = () => {
@@ -77,14 +81,19 @@ function ReportTab() {
     }
 
     const onCloseMap = (region) => {
-        if(region) {
+        if (region) {
             setRegion(region);
         }
         setModalMap(false);
     }
 
     const onPickLocation = () => {
-        setModalMap(true);
+        if (region) {
+            setForm({ ...form, region: null });
+            setRegion(null);
+        } else {
+            setModalMap(true);
+        }
     }
 
     const onReport = () => {
@@ -104,7 +113,7 @@ function ReportTab() {
                     <Card containerStyle={{ margin: 0, borderWidth: 0 }} >
                         <Card.Title>Adjuntar imagen</Card.Title>
                         {form.picture !== "" && <Card.Image onPress={onPressPicture} source={{ uri: form.picture }} />}
-                        <Button title="Seleccionar" type="clear" onPress={onPickMedia} />
+                        <Button title={form.picture !== ""?"Eliminar imagen": "Seleccionar imagen"} type="clear" onPress={onPickMedia} />
                     </Card>
                     <Card containerStyle={{ margin: 0, borderWidth: 0 }} >
                         <Card.Title>Seleccionar ubicación</Card.Title>
@@ -113,7 +122,7 @@ function ReportTab() {
                                 <MapView pitchEnabled={false} rotateEnabled={false} zoomEnabled={false} scrollEnabled={false}
                                     style={{ ...styles.map }}
                                     region={region}
-                                    // showsUserLocation={true}
+                                // showsUserLocation={true}
                                 >
                                 </MapView>
                                 <View style={{
@@ -124,7 +133,7 @@ function ReportTab() {
                                     <Icon name="map-marker-alt" type="font-awesome-5" color={COLORS.PRIMARY} size={40} />
                                 </View>
                             </View>}
-                        <Button title="Seleccionar" type="clear" onPress={onPickLocation} />
+                        <Button title={region ? "Eliminar ubicación" : "Seleccionar ubicación"} type="clear" onPress={onPickLocation} />
                     </Card>
                     <CustomButton title="Reportar" buttonColor={COLORS.SECONDARY} onPress={onReport} />
                 </Card>
