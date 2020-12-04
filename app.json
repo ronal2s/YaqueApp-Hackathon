@@ -1,0 +1,31 @@
+{
+  "expo": {
+    "name": "yaqueRescate",
+    "slug": "yaqueRescate",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/_icon.png",
+    "splash": {
+      "image": "./assets/logo.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#00396c"
+    },
+    "updates": {
+      "fallbackToCacheTimeout": 0
+    },
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "ios": {
+      "supportsTablet": true
+    },
+    "web": {
+      "favicon": "./assets/favicon.png"
+    },
+    "android": {
+      "package": "com.renysdelacruz.yaque",
+      "versionCode": 1,
+      "permissions": []
+    }
+  }
+}
