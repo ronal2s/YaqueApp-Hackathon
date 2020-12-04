@@ -8,6 +8,7 @@ import Home from "../screens/home";
 import Login from "../screens/login";
 import Settings from "./settings";
 import Screen1 from "./screen1";
+import ViewPost from "./home/community/post";
 //Custom components
 import CustomAlert from "../components/customAlert";
 //Styles
@@ -30,7 +31,7 @@ function AppContainer(props: IAppContainer) {
         // headerTitle: globalContext.context.user.player_info.full_name,
         headerRight: () => <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "space-evenly", marginHorizontal: 10 }} >
             <TouchableOpacity onPress={props.signOut} >
-                <Icon name="sign-out-alt" color="white" size={15} />
+                <Icon name="sign-out-alt" color="white" size={25} />
             </TouchableOpacity>
         </View>,
     })
@@ -44,6 +45,7 @@ function AppContainer(props: IAppContainer) {
                     <Stack.Screen name={Screens.Home} component={Home} options={{ headerTitle: "Yaque Rescate" }} />
                     <Stack.Screen name={Screens.Settings} component={Settings} options={stepsRecargaHeader} />
                     <Stack.Screen name={Screens.Screen1} component={Screen1}  />
+                    <Stack.Screen name={Screens.Post} component={ViewPost}  />
                 </Stack.Navigator>
                 :
                 <Stack.Navigator initialRouteName={Screens.Login} >

@@ -5,13 +5,14 @@ export enum Screens {
     Settings = "Ajustes",
     Home = "Inicio",
     Ajustes = "Ajustes",
-    Salir = "Salir"
+    Salir = "Salir",
+    Post = "Publicación"
 };
 
 export enum TabScreens {
     News = "Noticias",
     Report = "Reporte",
-    Advices = "Consejos"
+    Community = "Comunidad"
 }
 
 export enum SECURE_KEYS {
@@ -39,7 +40,7 @@ export enum COLORS {
     RED = "#e73a43",
     RED_INTENSE = "#ff5252",
     PRIMARY = "#3498db",
-    PRIMARY_DARK = "#002c53",
+    PRIMARY_DARK = "#2980b9",
     SECONDARY = "#1abc9c",
     GRAY = "#86929e",
     LIGHT_GRAY = "#dfe4ea",

@@ -3,6 +3,16 @@ import * as SecureStorage from "expo-secure-store";
 import { IAlert } from "../contexts/alertContext";
 import { IGlobalContexts, IUser } from "../contexts/globalContexts";
 
+export const getUIDCode = () => {
+    var d = new Date().getTime();
+    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+        var r = (d + Math.random() * 16) % 16 | 0;
+        d = Math.floor(d / 16);
+        return (c == 'x' ? r : (r & 0x3 | 0x8)).toString(16);
+    });
+};
+
+
 export function toCapitalize(text: string) {
     return text[0].toUpperCase() + text.substr(1);
 }

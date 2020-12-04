@@ -14,7 +14,7 @@ import { View } from "../../styles/emotions";
 //Tabs
 import NewsTab from "./news";
 import ReportTab from "./report";
-import AdvicesTab from "./advices";
+import CommunityTab from "./community";
 
 const Tab = createBottomTabNavigator();
 
@@ -58,7 +58,7 @@ function Home(props: { navigation: any; }) {
             >
                 <Tab.Screen name={TabScreens.News} component={NewsTab} initialParams={{ parentNavigation: navigation }} />
                 <Tab.Screen name={TabScreens.Report} component={ReportTab} initialParams={{ parentNavigation: navigation }} />
-                <Tab.Screen name={TabScreens.Advices} component={AdvicesTab} initialParams={{ parentNavigation: navigation }} />
+                <Tab.Screen name={TabScreens.Community} component={CommunityTab} initialParams={{ parentNavigation: navigation }} />
 
             </Tab.Navigator>
         </NavigationContainer>
