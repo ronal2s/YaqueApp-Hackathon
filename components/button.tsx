@@ -44,7 +44,7 @@ function CustomButton(props: ButtonProps) {
                 borderRadius: props.noBorder? 0.1: undefined, height: props.height,  ...props.style,
             }}
             titleStyle={{ color: props.type == "outline" && props.buttonColor ? props.buttonColor : "white" }}
-            onPress={props.onPress} containerStyle={{ marginTop: 10, }} loading={props.loading}
+            onPress={props.onPress} containerStyle={{ marginTop: 5, }} loading={props.loading}
         />
 
     )

@@ -23,6 +23,7 @@ export enum SECURE_KEYS {
     TOKEN = "token",
     KEEP_LOGIN = "keepLogin",
     USER = "user",
+    NON_USER = "non_user",
     PASSWORD = "password"
 }
 

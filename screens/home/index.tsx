@@ -63,21 +63,6 @@ function Home(props: { navigation: any; }) {
             </Tab.Navigator>
         </NavigationContainer>
     )
-
-    return (
-        <React.Fragment>
-            <ScrollView>
-                <View padding={15} flexWrap="wrap" flexDirection="row" justifyContent="space-around" >
-                    <CircleButton text="Screen #1" color={COLORS.PRIMARY} icon="mobile-alt" effect="bounce" effectDelay={100} onPress={() => openScreen(Screens.Screen1)} />
-                    <CircleButton text="Screen #2" color={COLORS.PRIMARY} icon="globe" effect="bounce" effectDelay={200} />
-                    <CircleButton text="Ajustes" color={COLORS.PRIMARY} icon="cog" onPress={onPressSettings} effect="bounce" effectDelay={800} />
-                    <CircleButton text="Salir" color={COLORS.PRIMARY} icon="sign-out-alt" effect="bounce" effectDelay={1000} />
-                </View>
-                <Separator />
-                <Separator />
-            </ScrollView>
-        </React.Fragment >
-    )
 }
 
 export default Home;

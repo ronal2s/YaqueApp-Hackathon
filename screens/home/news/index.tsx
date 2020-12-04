@@ -22,7 +22,7 @@ interface INewsItem {
 const NewsItem = (props: INewsItem) => {
     return (
         <Card>
-            <Card.Title>{props.title}</Card.Title>
+            <Card.Title style={{fontSize: 18}} >{props.title}</Card.Title>
             <Card.Image source={{ uri: props.uri }} />
             <Separator />
             <Text numberOfLines={3} >{props.body}</Text>
