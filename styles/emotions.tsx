@@ -37,7 +37,8 @@ interface IView {
     alignItems?: FlexAlignType,
     padding?: number,
     marginTop?: number, marginBottom?: number, marginLeft?: number, marginRight?: number,
-    backgroundColor?: string, borderRadius?: number, width?: number | string, height?: number, borderWidth?: number, borderColor?: number,
+    backgroundColor?: string, borderRadius?: number, width?: number | string, height?: number,
+    borderWidth?: number, borderColor?: string, borderBottomWidth?: number,
     flexDirection?: "row" | "row-reverse" | "column" | "column-reverse",
     flexWrap?: "nowrap" | "wrap" | "wrap-reverse",
     paddingHorizontal?: number, borderTopRightRadius?: number, borderTopLeftRadius?: number,
@@ -62,7 +63,7 @@ export const View = styled.View((props: IView) => ({
     borderColor: props.borderColor as any,
     borderWidth: props.borderWidth,
     width: props.width,
-    borderTopLeftRadius: props.borderTopLeftRadius,
+    borderTopLeftRadius: props.borderTopLeftRadius, borderBottomWidth: props.borderBottomWidth,
     borderTopRightRadius: props.borderTopRightRadius,
     position: props.position as any,
     left: props.left, right: props.right, top: props.top, bottom: props.bottom,
@@ -108,5 +109,13 @@ export const BottomLine = styled.View((props: IBottomLine) => ({
     width: props.width ? props.width : "100%",
     backgroundColor: COLORS.GRAY,
     marginTop: 5,
-    marginBottom: 5    
+    marginBottom: 5
+}))
+
+interface IScrollView {
+    padding?: number,
+}
+
+export const ScrollView = styled.ScrollView((props: IScrollView) => ({
+    padding: props.padding
 }))

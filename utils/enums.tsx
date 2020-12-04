@@ -38,9 +38,9 @@ export enum ALERTS {
 export enum COLORS {
     RED = "#e73a43",
     RED_INTENSE = "#ff5252",
-    PRIMARY = "#00396c",
+    PRIMARY = "#3498db",
     PRIMARY_DARK = "#002c53",
-    SECONDARY = "#a5d549",
+    SECONDARY = "#1abc9c",
     GRAY = "#86929e",
     LIGHT_GRAY = "#dfe4ea",
     YELLOW = "#eccc68",

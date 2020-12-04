@@ -40,12 +40,12 @@ function CustomPicker(props: PickerProps) {
 
 
     return (
-        <View style={{ width: props.width ? props.width : "100%" }} >
+        <View style={{ width: props.width ? props.width : "100%",  }} >
             {props.label && <Text style={globalStyles.label} >{props.label}</Text>}
             <TouchableOpacity onPress={openModal} >
                 <View style={[props.rounded ? roundedStyle : {}, props.rounded ? shadow : {}, {
                     marginBottom: props.marginTop != undefined ? props.marginTop : 10, marginHorizontal: props.marginHorizonta != undefined ? props.marginHorizonta : 10,
-                    justifyContent: "center",
+                    justifyContent: "center", 
                 }, props.square ? { ...globalStyles.inputSquare, ...globalStyles.shadow, } : {}, { borderBottomWidth: props.borderColor ? 1 : 0, borderBottomColor: props.borderColor, borderRadius: 5, paddingLeft: 5, height: props.height?props.height:40 }]} >
                     {/* <Picker
                     selectedValue={props.selectedValue}
@@ -58,7 +58,7 @@ function CustomPicker(props: PickerProps) {
                     })}
                 </Picker> */}
                     <View style={{ flexDirection: "row", justifyContent: "space-between", width: "95%", }} >
-                        <Text style={{ color: props.textColor ? props.textColor : "gray", fontSize: 16 }} >{props.selectedValue !== "" ? (props.selectedValue) : (props.placeholer ? props.placeholer : "Select")}</Text>
+                        <Text style={{ color: props.textColor ? props.textColor : "gray", fontSize: 16 }} >{props.selectedValue !== "" ? (props.selectedValue) : (props.placeholer ? props.placeholer : "Seleccionar")}</Text>
                         <Icon name="chevron-down" type="material-community" color={props.textColor ? props.textColor : undefined} />
                     </View>
                 </View>
