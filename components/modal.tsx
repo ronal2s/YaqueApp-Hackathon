@@ -36,9 +36,10 @@ function CustomModal(props: ModalProps) {
     function Default() { }
 
     return (
-        <Modal isVisible={open} onModalShow={_onModalShow} animationIn={props.animationIn ? props.animationIn : "slideInDown"} animationOut={props.animationOut ? props.animationOut : "slideOutDown"}
+        // <Modal isVisible={open} onModalShow={_onModalShow} animationIn={props.animationIn ? props.animationIn : "slideInDown"} animationOut={props.animationOut ? props.animationOut : "slideOutDown"}
+        <Modal isVisible={open} animationIn={props.animationIn ? props.animationIn : "slideInDown"} animationOut={props.animationOut ? props.animationOut : "slideOutDown"}
             onModalHide={_onHide} onSwipeComplete={props.disableSwipe ? () => console.log() : _onClose} swipeDirection={props.disableSwipe?undefined:"right"}
-            onBackButtonPress={_onClose} onBackdropPress={_onClose}  >
+            onBackButtonPress={_onClose} onBackdropPress={_onClose} onModalWillShow={props.onShow} >
             <View style={darkThemeMidView}>
                 <View style={{ flexDirection: "row", justifyContent: "center" }} >
                     {props.titleIcon && <Icon name={props.titleIcon} size={32} color={props.titleIconColor} style={{ marginRight: 10 }} />}

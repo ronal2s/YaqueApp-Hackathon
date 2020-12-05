@@ -49,41 +49,40 @@ export const updateData = async (new_report: any) => {
 }
 
 
-export const putReport = async (item: IFPost, callback: () => void) => {
+export const putReport = async (item: IFPost) => {
     const code = + new Date();
     const auxItem = { ...item };
 
     const storageUser = firebase.storage().ref(`reports/${code}`);
-    const promise = new Promise(async (resolve, reject) => {
-        try {
-            if (item.picture !== "") {
-                const currentImage = await storageUser.put(await getBlob(item.picture));
-                const imageURL = await currentImage.ref.getDownloadURL();
-                auxItem.picture = imageURL;
-            }
-            let data = await (await db.collection(Collections.REPORTS).doc(Documents.DATA).get()).data();
-            console.log("fulldata: ", data)
-            if (!data) {
-                data = {
-                    data: []
-                }
-            }
-            //Para guardarlo con fecha
-            // if (!data[momentTime]) {
 
-            //     data[momentTime] = []
-            // }
-            // data[momentTime].push(auxItem);
-            data.data.push(auxItem);
-            await db.collection(Collections.REPORTS).doc(Documents.DATA).set({ ...data })
-            resolve();
-        } catch (error) {
-            console.log(error)
-            alert(error.message);
-        }
-    })
-    promise.then((result) => {
-        callback();
-    })
+    if (item.picture !== "") {
+        const currentImage = await storageUser.put(await getBlob(item.picture));
+        const imageURL = await currentImage.ref.getDownloadURL();
+        auxItem.picture = imageURL;
+    }
+    let data = await (await db.collection(Collections.REPORTS).doc(Documents.DATA).get()).data();
+    console.log("fulldata: ", data)
+    if (!data) {
+        data = []
+    } else {
+        const keysObject = Object.keys(data);
+        const auxObjects = { ...data };
+        data = [];
+        keysObject.forEach(key => {
+            //@ts-ignore
+            data.push(auxObjects[key])
+        })
+    }
+    //Para guardarlo con fecha
+    // if (!data[momentTime]) {
 
+    //     data[momentTime] = []
+    // }
+    // data[momentTime].push(auxItem);
+    data.push(auxItem);
+    return await db.collection(Collections.REPORTS).doc(Documents.DATA).set({ ...data })
+}
+
+export const updateReports = async (reports: IFPost[]) => {
+    return await db.collection(Collections.REPORTS).doc(Documents.DATA).update({ ...reports });
 }

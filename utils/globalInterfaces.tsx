@@ -18,7 +18,7 @@ export interface IFPost {
     // latitude: string,
     // longitude: string,
     solved: boolean,
-    date: string,
+    date: number,
     verified?: boolean,
     user: { name: string, email?: string },
     comments: {

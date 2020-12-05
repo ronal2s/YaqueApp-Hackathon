@@ -1,32 +1,56 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Button, Card } from "react-native-elements";
 import Separator from "../../../components/separator";
+import { getDb } from "../../../services/firestore";
 //Utils
 import { ScrollView, Text, Title, View } from "../../../styles/emotions";
-import { COLORS, Screens } from "../../../utils/enums";
+import { Collections, COLORS, Documents, Screens } from "../../../utils/enums";
+import { IFPost } from "../../../utils/globalInterfaces";
 
 function CommunityTab(props) {
+    const [data, setData] = useState([]);
     const { parentNavigation } = props.route.params;
+    useEffect(() => {
+        // fetchNews();
+        observerPosts();
+    }, [])
 
+    const observerPosts = async () => {
+        getDb().collection(Collections.REPORTS).doc(Documents.DATA).onSnapshot(observer => {
+            if (observer.data()) {
+                console.log("Dentro")
+                //@ts-ignore
+                const keysObject = Object.keys(observer.data());
+                const auxObjects = { ...observer.data() };
+                let _data: any = [];
+                for (let i = keysObject.length - 1; i >= 0; i--) {
+                    _data.push(auxObjects[keysObject[i]])
+
+                }
+                // console.log("Datos: ", (_data as IFPost[]).sort((a, b) => a.date - b.date))
+                setData((_data as IFPost[]).sort((a, b) => b.date - a.date));
+            }
+        })
+    }
 
     const onExpandPost = (post: any) => {
-        parentNavigation.navigate(Screens.Post, { post })
+        parentNavigation.navigate(Screens.Post, { post, allPosts: data })
     }
 
     return (
         <ScrollView>
             {/* <Title>Hoy</Title> */}
-            <Title>Otros reportes</Title>
-            {posts.map((post, key) => {
+            <Separator />
+            <Title>Reportes de la comunidad</Title>
+            {data.map((post, key) => {
                 return (
                     <Card key={key} >
-                        <Card.FeaturedTitle style={{color: "black"}} >{post.title}</Card.FeaturedTitle>
-                        <Card.Image source={{ uri: post.picture }} />
+                        <Card.FeaturedTitle style={{ color: "black" }} >{post.title}</Card.FeaturedTitle>
+                        {post.picture !== "" && <Card.Image source={{ uri: post.picture }} />}
                         <Text>{post.user.name} - {post.description}</Text>
                         <Separator />
                         <Text fontWeight="bold" color={COLORS.SECONDARY}>{post.comments.length} Comentarios</Text>
                         <Button title="Ver más" type="outline" onPress={() => onExpandPost(post)} />
-                        {/* <Separator/> */}
                     </Card>
                 )
             })}
@@ -47,7 +71,7 @@ const posts = [
         solved: false,
         date: new Date().toLocaleDateString("en-US"),
         verified: false,
-        user: {name: "Juan Veloz", email: null},
+        user: { name: "Juan Veloz", email: null },
         comments: [
             { id: "183", userId: "402", text: "Es cierto", name: "Jennifer Veloz" },
         ]

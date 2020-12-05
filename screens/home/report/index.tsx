@@ -19,7 +19,7 @@ import * as FirestoreService from "../../../services/firestore";
 //Modals
 import ModalMap from "./modalMap";
 import { IFPost } from "../../../utils/globalInterfaces";
-import { getStore } from "../../../utils/functions";
+import { getStore, getUIDCode } from "../../../utils/functions";
 import { GlobalContext } from "../../../contexts/globalContexts";
 
 function ReportTab() {
@@ -70,8 +70,8 @@ function ReportTab() {
         }
     }
     const onPickMedia = () => {
-        if(form.picture) {
-            setForm({...form, picture: ""});
+        if (form.picture) {
+            setForm({ ...form, picture: "" });
         } else {
             Alert.alert("Seleccionar una imágen", "Escoger una opción", [
                 { text: "Cámara", onPress: pickCameraPhoto },
@@ -108,27 +108,32 @@ function ReportTab() {
         setLoading(true);
         const obj = { ...form };
         let name = "Anónimo";
+        obj.date = + new Date();
+        obj.id = getUIDCode();
         obj.user.name = name;
-        obj.region = {...region};
+        obj.region = { ...region };
         const user = await getStore(SECURE_KEYS.USER);
         const nonUser = await getStore(SECURE_KEYS.NON_USER);
-        if(user) {
+        if (user) {
             const jsonUser = JSON.parse(user);
-            obj.user = {...jsonUser};
+            obj.user = { ...jsonUser };
             obj.verified = true;
         }
 
-        if(nonUser && !user) {
+        if (nonUser && !user) {
             obj.user.name = nonUser;
         }
 
         //Push report to firebase
-        FirestoreService.putReport(obj, () => {
-            setForm({...models.report});
+        try {
+            await FirestoreService.putReport(obj);
             setRegion(null);
+            setForm({ ...models.report });
             globalContext.setAlert("Notificación", "Reporte enviado!");
-            setLoading(false);
-        })
+        } catch (error) {
+            globalContext.setAlert("Error", error.message, true);
+        }
+        setLoading(false);
     }
 
 
@@ -143,7 +148,7 @@ function ReportTab() {
                     <Card containerStyle={{ margin: 0, borderWidth: 0 }} >
                         {/* <Card.Title>Adjuntar imagen</Card.Title> */}
                         {form.picture !== "" && <Card.Image onPress={onPressPicture} source={{ uri: form.picture }} />}
-                        <Button title={form.picture !== ""?"Eliminar imagen": "Seleccionar imagen"} type="clear" onPress={onPickMedia} />
+                        <Button title={form.picture !== "" ? "Eliminar imagen" : "Seleccionar imagen"} type="clear" onPress={onPickMedia} />
                     </Card>
                     <Card containerStyle={{ margin: 0, borderWidth: 0 }} >
                         {/* <Card.Title>Seleccionar ubicación</Card.Title> */}

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Card } from "react-native-elements";
 //Custom Components
 import CustomButton from "../../../components/button";
@@ -8,14 +8,22 @@ import { COLORS } from "../../../utils/enums";
 import { IFPost } from "../../../utils/globalInterfaces";
 //Modals
 import ModalComment from "./modalComment";
+//Service
+import * as FirestoreService from "../../../services/firestore";
+import { GlobalContext } from "../../../contexts/globalContexts";
 
 interface IViewPost {
-    post: IFPost
+    // post: IFPost
+    route: any,
+    // allPosts: IFPost[]
 }
-function ViewPost(props) {
+function ViewPost(props: IViewPost) {
     const post: IFPost = props.route.params.post;
+    const allPosts: IFPost[] = props.route.params.allPosts;
     const [modalComment, setModalComment] = useState(false);
     const [currentPost, setCurrentPost] = useState<IFPost>(post);
+    const [loading, setLoading] = useState(false);
+    const globalContext = useContext(GlobalContext);
 
     const openComment = () => {
         setModalComment(true);
@@ -25,12 +33,30 @@ function ViewPost(props) {
         setModalComment(false);
     }
 
-    const onNewComment = (content: any) => {
+    const onNewComment = async (content: any) => {
+        setLoading(true);
         const _comments = [...currentPost.comments];
         _comments.push(content);
-        setCurrentPost({...currentPost, comments: _comments})
-        setModalComment(false);
-        //Save data on firebase
+        // setCurrentPost({ ...currentPost, comments: _comments })
+        // setModalComment(false);
+        //Save data on firebase/
+        const id = currentPost.id;
+        console.log("_allPosts: ", allPosts)
+        const _allPosts = [...allPosts];
+        for (let i = 0; i < _allPosts.length; i++) {
+            const el = _allPosts[i];
+            if (el.id === id) {
+                _allPosts[i].comments = [..._comments];
+                break;
+            }
+        }
+        try {
+            await FirestoreService.updateReports(_allPosts);
+            setModalComment(false);
+        } catch (error) {
+            globalContext.setAlert("Error", error.message, true);
+        }
+        setLoading(false);
     }
 
     return (
@@ -39,7 +65,7 @@ function ViewPost(props) {
                 <ScrollView>
                     <Card containerStyle={{ margin: 0 }}>
                         <Card.FeaturedTitle style={{ color: "black" }} >{currentPost.title}</Card.FeaturedTitle>
-                        <Card.Image source={{ uri: currentPost.picture }} />
+                        {currentPost.picture !== "" && <Card.Image source={{ uri: currentPost.picture }} />}
                         <Text>{currentPost.description}</Text>
                     </Card>
                     {currentPost.comments.map((comment, key) => {
@@ -55,8 +81,8 @@ function ViewPost(props) {
                     })}
                 </ScrollView>
             </View>
-            <CustomButton noBorder title="Comentar" onPress={openComment} />
-            <ModalComment open={modalComment} onClose={closeComment} onNewComment={onNewComment} />
+            <CustomButton loading={false} noBorder title="Comentar" onPress={openComment} />
+            <ModalComment loading={loading} open={modalComment} onClose={closeComment} onNewComment={onNewComment} />
         </View>
     )
 }

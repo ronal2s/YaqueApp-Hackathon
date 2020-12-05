@@ -23,7 +23,8 @@ const models = {
         solved: false,
         verified: false,
         user: { name: "", email: "" },
-        date: new Date().toLocaleDateString("en-US"),
+        // date: new Date().toLocaleDateString("en-US"),
+        date: +new Date(),
         comments: []
     }
 }

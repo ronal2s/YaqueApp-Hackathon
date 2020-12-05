@@ -11,6 +11,7 @@ interface IModalComment {
     open: boolean,
     onClose: () => void,
     onNewComment: (content: any) => void,
+    loading: boolean,
 }
 function ModalComment(props: IModalComment) {
     const [comment, setComment] = useState("");
@@ -39,15 +40,19 @@ function ModalComment(props: IModalComment) {
         if(nonUser && !user) {
             obj.name = nonUser;
         }
-
+        setComment("");
         props.onNewComment(obj);
     }
 
+    const onShow = () => {
+        setComment("");
+    }
+
     return (
-        <CustomModal open={props.open} onClose={props.onClose} >
+        <CustomModal open={props.open} onClose={props.onClose} onShow={onShow} >
             <Title>Comentar</Title>
             <CustomInput square marginBottom={0.001} label="Comentar" name="comment" value={comment} textArea numberOfLines={3} onChangeText={handleComment} />
-            <CustomButton title="Comentar" onPress={onSaveComment} />
+            <CustomButton loading={props.loading} title="Comentar" onPress={onSaveComment} />
         </CustomModal>
     )
 }
