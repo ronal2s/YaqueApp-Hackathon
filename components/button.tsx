@@ -37,7 +37,7 @@ function CustomButton(props: ButtonProps) {
     }
 
     return (
-        <Button_ title={props.title} raised={props.raised} type={props.type} disabled={props.disabled}
+        <Button_ title={props.title} raised={props.raised} type={props.type} disabled={props.disabled || props.loading}
             buttonStyle={{
                 marginBottom: props.marginBottom ? props.marginBottom : undefined, marginLeft: props.marginLeft ? props.marginLeft : undefined,
                 width: props.width ? props.width : undefined, backgroundColor: props.type == "outline" ? "rgba(0,0,0,0)" : props.type == "solid" ? props.buttonColor ? props.buttonColor : COLORS.PRIMARY : props.buttonColor ? props.buttonColor : COLORS.PRIMARY, borderColor: props.buttonColor ? props.buttonColor : COLORS.PRIMARY,

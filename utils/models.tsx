@@ -16,11 +16,13 @@ const models = {
             longitudeDelta: 0,
             latitudeDelta: 0,
             latitude: 0,
-            longitude: 0,    
+            longitude: 0,
         },
         // latitude: "",
         // longitude: "",
         solved: false,
+        verified: false,
+        user: { name: "", email: "" },
         date: new Date().toLocaleDateString("en-US"),
         comments: []
     }

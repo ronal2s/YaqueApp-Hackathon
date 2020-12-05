@@ -4,6 +4,7 @@ import "firebase/auth";
 import "firebase/firestore";
 import { Collections, Documents, KEYS } from "../utils/enums";
 import { getBlob, getStorage } from '../utils/functions';
+import { IFNews, IFPost } from '../utils/globalInterfaces';
 
 
 const firebaseConfig = {
@@ -48,16 +49,14 @@ export const updateData = async (new_report: any) => {
 }
 
 
-export const putReport = async (item: { sector: string, street: string, picture: string, firstTime: string }, callback: () => void) => {
-    const uid = await getStorage(KEYS.UID);
+export const putReport = async (item: IFPost, callback: () => void) => {
+    const code = + new Date();
     const auxItem = { ...item };
-    const momentTime = moment().format("MM/DD/YYYY");
 
-    const storageUser = firebase.storage().ref(`reports/${new Date().toLocaleDateString("en")}/${uid}`);
+    const storageUser = firebase.storage().ref(`reports/${code}`);
     const promise = new Promise(async (resolve, reject) => {
         try {
             if (item.picture !== "") {
-                console.log("dentro")
                 const currentImage = await storageUser.put(await getBlob(item.picture));
                 const imageURL = await currentImage.ref.getDownloadURL();
                 auxItem.picture = imageURL;
@@ -80,7 +79,7 @@ export const putReport = async (item: { sector: string, street: string, picture:
             resolve();
         } catch (error) {
             console.log(error)
-            alert(error);
+            alert(error.message);
         }
     })
     promise.then((result) => {

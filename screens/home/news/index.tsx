@@ -56,11 +56,7 @@ function NewsTab(props: any) {
                 for(let i = keysObject.length-1; i >=0; i--) {
                     _data.push(auxObjects[keysObject[i]])
         
-                }
-                // keysObject.forEach(key => {
-                //     //@ts-ignore
-                //     _data.push(auxObjects[key])
-                // })
+                }                
                 setNews(_data)
             }
         })

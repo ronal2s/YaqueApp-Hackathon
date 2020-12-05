@@ -9,15 +9,21 @@ export interface IFPost {
     description: string,
     priority: string,
     picture: string,
-    latitude: string,
-    longitude: string,
-    solved: false,
+    region: {
+        longitudeDelta: number,
+        latitudeDelta: number,
+        latitude: number,
+        longitude: number,    
+    },
+    // latitude: string,
+    // longitude: string,
+    solved: boolean,
     date: string,
     verified?: boolean,
     user: { name: string, email?: string },
     comments: {
         id: string, userId: string, text: string, name: string, verified?: boolean
-    }[]
+    }[] | []
 }
 
 export interface IFNews {

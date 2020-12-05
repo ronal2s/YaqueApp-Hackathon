@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { Alert, Keyboard } from "react-native";
 import { Button, Card, Icon } from "react-native-elements";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
@@ -12,15 +12,23 @@ import CustomPicker from "../../../components/picker";
 //Utils
 import styles from "./styles";
 import { View } from "../../../styles/emotions";
-import { COLORS } from "../../../utils/enums";
+import { COLORS, SECURE_KEYS } from "../../../utils/enums";
 import models from "../../../utils/models";
+//Service
+import * as FirestoreService from "../../../services/firestore";
+//Modals
 import ModalMap from "./modalMap";
+import { IFPost } from "../../../utils/globalInterfaces";
+import { getStore } from "../../../utils/functions";
+import { GlobalContext } from "../../../contexts/globalContexts";
 
 function ReportTab() {
-    const [form, setForm] = useState({ ...models.report });
+    const [form, setForm] = useState<IFPost>({ ...models.report, title: "Reporte de basura", description: "He observado mucha basura en esta parte de la ciudad, cerca del rio", priority: "Alta" });
     const [loading, setLoading] = useState(false);
     const [modalMap, setModalMap] = useState(false);
     const [region, setRegion] = useState(null);
+
+    const globalContext = useContext(GlobalContext);
 
     const handleinputs = (name: string, value: string) => {
         setForm({ ...form, [name]: value });
@@ -96,9 +104,31 @@ function ReportTab() {
         }
     }
 
-    const onReport = () => {
+    const onReport = async () => {
+        setLoading(true);
         const obj = { ...form };
+        let name = "Anónimo";
+        obj.user.name = name;
+        obj.region = {...region};
+        const user = await getStore(SECURE_KEYS.USER);
+        const nonUser = await getStore(SECURE_KEYS.NON_USER);
+        if(user) {
+            const jsonUser = JSON.parse(user);
+            obj.user = {...jsonUser};
+            obj.verified = true;
+        }
+
+        if(nonUser && !user) {
+            obj.user.name = nonUser;
+        }
+
         //Push report to firebase
+        FirestoreService.putReport(obj, () => {
+            setForm({...models.report});
+            setRegion(null);
+            globalContext.setAlert("Notificación", "Reporte enviado!");
+            setLoading(false);
+        })
     }
 
 
@@ -111,12 +141,12 @@ function ReportTab() {
                     <CustomInput label="Descripción" placeholder="Desarrollar el problema" name="description" value={form.description} textArea numberOfLines={5} onChangeText={handleinputs} />
                     <CustomPicker label="Prioridad" items={["Alta", "Media", "Baja"]} name="priority" borderColor={COLORS.LABEL} selectedValue={form.priority} onValueChange={handleinputs} />
                     <Card containerStyle={{ margin: 0, borderWidth: 0 }} >
-                        <Card.Title>Adjuntar imagen</Card.Title>
+                        {/* <Card.Title>Adjuntar imagen</Card.Title> */}
                         {form.picture !== "" && <Card.Image onPress={onPressPicture} source={{ uri: form.picture }} />}
                         <Button title={form.picture !== ""?"Eliminar imagen": "Seleccionar imagen"} type="clear" onPress={onPickMedia} />
                     </Card>
                     <Card containerStyle={{ margin: 0, borderWidth: 0 }} >
-                        <Card.Title>Seleccionar ubicación</Card.Title>
+                        {/* <Card.Title>Seleccionar ubicación</Card.Title> */}
                         {region &&
                             <View flex={1} height={150} >
                                 <MapView pitchEnabled={false} rotateEnabled={false} zoomEnabled={false} scrollEnabled={false}
@@ -135,7 +165,7 @@ function ReportTab() {
                             </View>}
                         <Button title={region ? "Eliminar ubicación" : "Seleccionar ubicación"} type="clear" onPress={onPickLocation} />
                     </Card>
-                    <CustomButton title="Reportar" buttonColor={COLORS.SECONDARY} onPress={onReport} />
+                    <CustomButton title="Reportar" loading={loading} buttonColor={COLORS.SECONDARY} onPress={onReport} />
                 </Card>
                 <ModalMap open={modalMap} onClose={onCloseMap} />
             </View>
