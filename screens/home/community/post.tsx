@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import { Card } from "react-native-elements";
+import { Card, Button } from "react-native-elements";
 //Custom Components
 import CustomButton from "../../../components/button";
 //Utils
@@ -11,6 +11,7 @@ import ModalComment from "./modalComment";
 //Service
 import * as FirestoreService from "../../../services/firestore";
 import { GlobalContext } from "../../../contexts/globalContexts";
+import { Linking } from "react-native";
 
 interface IViewPost {
     // post: IFPost
@@ -59,6 +60,12 @@ function ViewPost(props: IViewPost) {
         setLoading(false);
     }
 
+    const goToLocation = () => {
+        // Linking.openURL(`https://www.google.com/maps/@${currentPost.region.latitude},${currentPost.region.longitude},16z`)
+        // Linking.openURL(`https://www.google.com/maps/place/@19.4538074,-70.6898944,17z/data=!3m1!4b1!4m5!3m4!1s0x0:0x0!8m2!3d19.4538024!4d-70.6877057`)
+        Linking.openURL(`https://www.google.com/maps/search/${currentPost.region.latitude},+${currentPost.region.longitude}/@${currentPost.region.latitude},${currentPost.region.longitude},17z`)
+    }
+
     return (
         <View flex={1} >
             <View flex={1}>
@@ -66,11 +73,12 @@ function ViewPost(props: IViewPost) {
                     <Card containerStyle={{ margin: 0 }}>
                         <Card.FeaturedTitle style={{ color: "black" }} >{currentPost.title}</Card.FeaturedTitle>
                         {currentPost.picture !== "" && <Card.Image source={{ uri: currentPost.picture }} />}
+                        {currentPost.region.latitude && <Button title="Ver ubicación" type="outline" onPress={goToLocation} />}
                         <Text>{currentPost.description}</Text>
                     </Card>
                     {currentPost.comments.map((comment, key) => {
                         return (
-                            <Card containerStyle={{ margin: 0 }} >
+                            <Card containerStyle={{ margin: 0 }} key={key} >
                                 <Text>
                                     <Text fontWeight="bold" color={COLORS.SECONDARY} >{comment.name} </Text>
                                     comenta:
