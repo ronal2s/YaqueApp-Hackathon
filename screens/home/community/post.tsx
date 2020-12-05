@@ -76,7 +76,7 @@ function ViewPost(props: IViewPost) {
                 <ScrollView>
                     <Card containerStyle={{ margin: 0 }}>
                         <Card.FeaturedTitle style={{ color: "black" }} >{currentPost.title}</Card.FeaturedTitle>
-                        {currentPost.picture !== "" && <Card.Image source={{ uri: currentPost.picture }} />}
+                        {currentPost.picture !== "" && <Card.Image style={{height: 300}} resizeMode="contain" source={{ uri: currentPost.picture }} />}
                         {currentPost.region.latitude &&
                             <View flex={1} height={200} >
                                 <MapView pitchEnabled={false} rotateEnabled={false} zoomEnabled={false} scrollEnabled={false}

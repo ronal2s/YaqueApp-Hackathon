@@ -46,7 +46,7 @@ function CommunityTab(props) {
                 return (
                     <Card key={key} >
                         <Card.FeaturedTitle style={{ color: "black" }} >{post.title}</Card.FeaturedTitle>
-                        {post.picture !== "" && <Card.Image source={{ uri: post.picture }} />}
+                        {post.picture !== "" && <Card.Image style={{height: 300}} resizeMode="contain" source={{ uri: post.picture }} />}
                         <Text>{post.user.name} - {post.description}</Text>
                         <Separator />
                         <Text fontWeight="bold" color={COLORS.SECONDARY}>{post.comments.length} Comentarios</Text>
