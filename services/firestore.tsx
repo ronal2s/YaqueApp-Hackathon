@@ -26,6 +26,21 @@ export const logout = () => {
     return firebase.auth().signOut()
 }
 
+export const getDb = () => { return db }
+
+
+export const getNews = async () => {
+    let obj: any = await (await db.collection(Collections.NEWS).doc(Documents.DATA).get()).data() as object;
+    const keysObject = Object.keys(obj);
+    const auxObjects = { ...obj };
+    obj = [];
+    keysObject.forEach(key => {
+        //@ts-ignore
+        obj.push(auxObjects[key])
+    })
+    return obj;
+}
+
 export const updateData = async (new_report: any) => {
     let data = await (await db.collection(Collections.REPORTS).doc(Documents.DATA).get()).data();
     data.push(new_report);

@@ -69,7 +69,8 @@ export enum Documents {
 
 export enum Collections {
     MASTER_USER_LIST = "masterUsersList",
-    REPORTS = "reports"
+    REPORTS = "reports",
+    NEWS = "news"
 }
 
 export enum KEYS {

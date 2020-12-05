@@ -1,9 +1,10 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Card } from "react-native-elements";
 import CustomButton from "../../../components/button";
 import Separator from "../../../components/separator";
+import { getNews, getDb } from "../../../services/firestore";
 import { ScrollView, Text, View } from "../../../styles/emotions";
-import { COLORS, Screens } from "../../../utils/enums";
+import { Collections, COLORS, Documents, Screens } from "../../../utils/enums";
 
 const dummyURL = "https://s3.amazonaws.com/cdn.conectate-new.com/wp-content/uploads/2017/05/14202139/Yaque-del-Norte-Valverde.jpg";
 const obj = {
@@ -25,7 +26,7 @@ const NewsItem = (props: INewsItem) => {
     return (
         <Card>
             <Card.Title style={{fontSize: 18}} >{props.title}</Card.Title>
-            <Card.Image source={{ uri: props.uri }} />
+            {props.uri !== "" && <Card.Image source={{ uri: props.uri }} />}
             <Separator />
             <Text numberOfLines={3} >{props.body}</Text>
             <CustomButton title="Leer más" onPress={props.onReadMore} />
@@ -36,8 +37,35 @@ const NewsItem = (props: INewsItem) => {
 
 
 function NewsTab(props: any) {
+    const [news, setNews] = useState([]);
     const { parentNavigation } = props.route.params;
     // console.log(props.route.params)
+
+    useEffect(() => {
+        // fetchNews();
+        observerNews();
+    },[])
+
+    const observerNews = async () => {
+        getDb().collection(Collections.NEWS).doc(Documents.DATA).onSnapshot(observer => {
+            if (observer.data()) {
+                //@ts-ignore
+                const keysObject = Object.keys(observer.data());
+                const auxObjects = { ...observer.data() };
+                let _data: any = [];
+                keysObject.forEach(key => {
+                    //@ts-ignore
+                    _data.push(auxObjects[key])
+                })
+                setNews(_data)
+            }
+        })
+    }
+    
+    const fetchNews = async () => {
+        const _news = await getNews();
+        setNews(_news);
+    }
 
     const onReadMore = (post) => {
         parentNavigation.navigate(Screens.News, {post});
@@ -45,7 +73,7 @@ function NewsTab(props: any) {
 
     return (
         <ScrollView >
-            {items.map((post, key) => {
+            {news.map((post, key) => {
                 return <NewsItem {...post} onReadMore={() => onReadMore(post)} key={key} />
             })}
             
