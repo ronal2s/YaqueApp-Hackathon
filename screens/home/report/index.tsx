@@ -23,7 +23,7 @@ import { getStore, getUIDCode } from "../../../utils/functions";
 import { GlobalContext } from "../../../contexts/globalContexts";
 
 function ReportTab() {
-    const [form, setForm] = useState<IFPost>({ ...models.report, title: "Reporte de basura", description: "He observado mucha basura en esta parte de la ciudad, cerca del rio", priority: "Alta" });
+    const [form, setForm] = useState<IFPost>({ ...models.report });
     const [loading, setLoading] = useState(false);
     const [modalMap, setModalMap] = useState(false);
     const [region, setRegion] = useState(null);

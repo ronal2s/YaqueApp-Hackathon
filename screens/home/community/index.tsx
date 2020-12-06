@@ -1,14 +1,17 @@
 import React, { useEffect, useState } from "react";
+import { ActivityIndicator } from "react-native";
 import { Button, Card } from "react-native-elements";
 import Separator from "../../../components/separator";
 import { getDb } from "../../../services/firestore";
 //Utils
 import { ScrollView, Text, Title, View } from "../../../styles/emotions";
-import { Collections, COLORS, Documents, Screens } from "../../../utils/enums";
+import { Collections, COLORS, Documents, Screens, SIZE } from "../../../utils/enums";
 import { IFPost } from "../../../utils/globalInterfaces";
 
 function CommunityTab(props) {
     const [data, setData] = useState([]);
+    const [ loading, setLoading ] = useState(true); 
+    
     const { parentNavigation } = props.route.params;
     useEffect(() => {
         // fetchNews();
@@ -29,6 +32,7 @@ function CommunityTab(props) {
                 }
                 // console.log("Datos: ", (_data as IFPost[]).sort((a, b) => a.date - b.date))
                 setData((_data as IFPost[]).sort((a, b) => b.date - a.date));
+                setLoading(false);
             }
         })
     }
@@ -42,6 +46,7 @@ function CommunityTab(props) {
             {/* <Title>Hoy</Title> */}
             <Separator />
             <Title>Reportes de la comunidad</Title>
+            {loading && <ActivityIndicator color={COLORS.PRIMARY} size={SIZE.SpinnerInfo} />}
             {data.map((post, key) => {
                 return (
                     <Card key={key} >

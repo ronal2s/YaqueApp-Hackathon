@@ -10,7 +10,7 @@ const models = {
         id: getUIDCode(),
         title: "",
         description: "",
-        priority: "",
+        priority: "Baja",
         picture: "",
         region: {
             longitudeDelta: 0,

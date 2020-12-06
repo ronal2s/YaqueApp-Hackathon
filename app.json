@@ -1,14 +1,14 @@
 {
   "expo": {
-    "name": "yaqueRescate",
+    "name": "Yaque Rescate",
     "slug": "yaqueRescate",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/_icon.png",
     "splash": {
-      "image": "./assets/logo.png",
+      "image": "./assets/splashHack.png",
       "resizeMode": "contain",
-      "backgroundColor": "#00396c"
+      "backgroundColor": "#002e46"
     },
     "updates": {
       "fallbackToCacheTimeout": 0

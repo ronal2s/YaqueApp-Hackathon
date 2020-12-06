@@ -65,9 +65,10 @@ function ViewPost(props: IViewPost) {
     }
 
     const goToLocation = () => {
-        // Linking.openURL(`https://www.google.com/maps/@${currentPost.region.latitude},${currentPost.region.longitude},16z`)
-        // Linking.openURL(`https://www.google.com/maps/place/@19.4538074,-70.6898944,17z/data=!3m1!4b1!4m5!3m4!1s0x0:0x0!8m2!3d19.4538024!4d-70.6877057`)
+        //Map
         Linking.openURL(`https://www.google.com/maps/search/${currentPost.region.latitude},+${currentPost.region.longitude}/@${currentPost.region.latitude},${currentPost.region.longitude},17z`)
+        //Directions
+        Linking.openURL(`google.navigation:q=${currentPost.region.latitude}+${currentPost.region.longitude}`)
     }
 
     return (
@@ -93,7 +94,7 @@ function ViewPost(props: IViewPost) {
                                     <Icon name="map-marker-alt" type="font-awesome-5" color={COLORS.PRIMARY} size={40} />
                                 </View>
                             </View>}
-                        {currentPost.region.latitude && <Button title="Ir a ubicación" type="outline" onPress={goToLocation} />}
+                        {currentPost.region.latitude && <Button title="Cómo llegar" type="outline" onPress={goToLocation} />}
                         <Text>{currentPost.description}</Text>
                     </Card>
                     
